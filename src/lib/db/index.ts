@@ -1,11 +1,13 @@
-import { Kysely, type RawBuilder, sql, SqliteDialect } from 'kysely';
-import Database from 'better-sqlite3';
-import { DATABASE_URL } from '$env/static/private';
+import { PG_CONNECTION_STRING } from '$env/static/private';
+import { Kysely, PostgresDialect, sql, type RawBuilder } from 'kysely';
+import { Pool } from 'pg';
 import type { DB } from './schema';
 
 export const db = new Kysely<DB>({
-	dialect: new SqliteDialect({
-		database: new Database(DATABASE_URL),
+	dialect: new PostgresDialect({
+		pool: new Pool({
+			connectionString: PG_CONNECTION_STRING,
+		}),
 	}),
 });
 
