@@ -186,6 +186,23 @@ export interface AuthUsers {
   deletedAt: Timestamp | null;
 }
 
+export interface Board {
+  id: string;
+  name: string;
+  userId: string;
+  updatedAt: Timestamp;
+  createdAt: Generated<Timestamp>;
+}
+
+export interface Column {
+  id: string;
+  name: string;
+  order: Generated<number>;
+  boardId: string;
+  updatedAt: Timestamp;
+  createdAt: Generated<Timestamp>;
+}
+
 export interface Example {
   id: Generated<number>;
   name: string;
@@ -240,6 +257,14 @@ export interface ExtensionsPgStatStatements {
 export interface ExtensionsPgStatStatementsInfo {
   dealloc: Int8 | null;
   statsReset: Timestamp | null;
+}
+
+export interface Key {
+  id: string;
+  hashedPassword: string | null;
+  userId: string;
+  primary: boolean;
+  expires: Int8 | null;
 }
 
 export interface PgsodiumDecryptedKey {
@@ -314,6 +339,13 @@ export interface PgsodiumValidKey {
   associatedData: string | null;
 }
 
+export interface Session {
+  id: string;
+  userId: string;
+  activeExpires: Int8;
+  idleExpires: Int8;
+}
+
 export interface StorageBuckets {
   id: string;
   name: string;
@@ -345,6 +377,30 @@ export interface StorageObjects {
   pathTokens: Generated<string[] | null>;
 }
 
+export interface SubTask {
+  id: string;
+  name: string;
+  order: Generated<number>;
+  taskID: string;
+  updatedAt: Timestamp;
+  createdAt: Generated<Timestamp>;
+}
+
+export interface Task {
+  id: string;
+  title: string;
+  description: string;
+  order: Generated<number>;
+  columnId: string;
+  updatedAt: Timestamp;
+  createdAt: Generated<Timestamp>;
+}
+
+export interface User {
+  id: string;
+  email: string;
+}
+
 export interface DB {
   "auth.auditLogEntries": AuthAuditLogEntries;
   "auth.identities": AuthIdentities;
@@ -360,15 +416,22 @@ export interface DB {
   "auth.ssoDomains": AuthSsoDomains;
   "auth.ssoProviders": AuthSsoProviders;
   "auth.users": AuthUsers;
+  Board: Board;
+  Column: Column;
   Example: Example;
   "extensions.pgStatStatements": ExtensionsPgStatStatements;
   "extensions.pgStatStatementsInfo": ExtensionsPgStatStatementsInfo;
+  key: Key;
   "pgsodium.decryptedKey": PgsodiumDecryptedKey;
   "pgsodium.key": PgsodiumKey;
   "pgsodium.maskColumns": PgsodiumMaskColumns;
   "pgsodium.maskingRule": PgsodiumMaskingRule;
   "pgsodium.validKey": PgsodiumValidKey;
+  session: Session;
   "storage.buckets": StorageBuckets;
   "storage.migrations": StorageMigrations;
   "storage.objects": StorageObjects;
+  SubTask: SubTask;
+  Task: Task;
+  user: User;
 }

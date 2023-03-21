@@ -11,15 +11,17 @@
 		"db:push": "prisma db push && node ./prisma/generate.cjs"
 	},
 	"dependencies": {
+		"@lucia-auth/adapter-kysely": "^0.7.1",
+		"@lucia-auth/sveltekit": "^0.6.11",
 		"@sveltejs/kit": "^1.8.6",
 		"@tanstack/svelte-query": "^4.24.4",
 		"@trpc/client": "^10.9.1",
 		"@trpc/server": "^10.9.1",
-		"better-sqlite3": "^8.1.0",
 		"devalue": "^4.2.3",
 		"dotenv": "^16.0.3",
 		"kysely": "^0.23.4",
 		"kysely-codegen": "^0.9.0",
+		"lucia-auth": "^0.10.0",
 		"pg": "^8.10.0",
 		"svelte": "^3.55.1",
 		"trpc-svelte-query": "^0.0.2",
@@ -27,7 +29,6 @@
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^2.0.0",
-		"@types/better-sqlite3": "^7.6.3",
 		"@types/pg": "^8.6.6",
 		"@typescript-eslint/eslint-plugin": "^5.50.0",
 		"@typescript-eslint/parser": "^5.50.0",
@@ -45,6 +46,7 @@
 		"prisma": "^4.9.0",
 		"svelte-check": "^3.0.3",
 		"svelte-preprocess": "^5.0.1",
+		"sveltekit-superforms": "^0.6.1",
 		"tailwindcss": "^3.2.4",
 		"typescript": "~4.9.5",
 		"vite": "^4.0.4"

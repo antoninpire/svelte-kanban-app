@@ -1,9 +1,22 @@
-/// <reference types="@sveltejs/kit" />
+declare global {
+	namespace App {
+		// interface Error {}
+		interface Locals {
+			validate: import('@lucia-auth/sveltekit').Validate;
+			validateUser: import('@lucia-auth/sveltekit').ValidateUser;
+			setSession: import('@lucia-auth/sveltekit').SetSession;
+		}
+		// interface PageData {}
+		// interface Platform {}
+	}
 
-declare namespace App {
-	// interface Platform {}
-	// interface Locals {}
-	// interface Error {}
-	// interface Session {}
-	// interface Stuff {}
+	/// <reference types="lucia-auth" />
+	declare namespace Lucia {
+		type Auth = import('$lib/server/lucia').Auth;
+		type UserAttributes = {
+			email: string;
+		};
+	}
 }
+
+export {};

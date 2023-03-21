@@ -1,8 +1,12 @@
 <script lang="ts">
-	import '../app.css';
-	import { QueryClientProvider } from '@tanstack/svelte-query';
-	import type { LayoutData } from './$types';
+	import { page } from '$app/stores';
 	import { trpc } from '$lib/trpc';
+	import { handleSession } from '@lucia-auth/sveltekit/client';
+	import { QueryClientProvider } from '@tanstack/svelte-query';
+	import '../app.css';
+	import type { LayoutData } from './$types';
+
+	handleSession(page);
 
 	export let data: LayoutData;
 

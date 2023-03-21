@@ -1,8 +1,11 @@
 import { trpc } from '$lib/trpc';
-import type { LayoutServerLoad } from './$types';
+import { handleServerSession } from '@lucia-auth/sveltekit';
+import type { LayoutServerLoad, LayoutServerLoadEvent } from './$types';
 
-export const load: LayoutServerLoad = async (event) => {
-	return {
-		trpc: trpc.ssr(event),
-	};
-};
+export const load: LayoutServerLoad = handleServerSession(
+	async (event: LayoutServerLoadEvent) => {
+		return {
+			trpc: trpc.ssr(event),
+		};
+	}
+);
