@@ -394,6 +394,7 @@ export interface Task {
   columnId: string;
   updatedAt: Timestamp;
   createdAt: Generated<Timestamp>;
+  endsAt: Timestamp | null;
 }
 
 export interface User {

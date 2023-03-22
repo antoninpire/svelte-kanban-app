@@ -9,6 +9,12 @@ export const db = new Kysely<DB>({
 			connectionString: PG_CONNECTION_STRING,
 		}),
 	}),
+	// log(event) {
+	// 	if (event.level === 'query') {
+	// 		console.log(event.query.sql);
+	// 		console.log(event.query.parameters);
+	// 	}
+	// },
 });
 
 export function json<T>(obj: T): RawBuilder<T> {

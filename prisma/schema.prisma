@@ -1,3 +1,7 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -77,6 +81,7 @@ model Task {
   title           String        @db.VarChar(75)
   description     String        @db.Text
   order           Int           @db.SmallInt  @default(autoincrement())
+  endsAt           DateTime?
 
   columnId        String
   column          Column        @relation(fields: [columnId], references: [id], onUpdate: Cascade, onDelete: Cascade)

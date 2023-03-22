@@ -1,4 +1,5 @@
 import { db } from '$lib/db';
+import { boardRouter } from '$lib/server/routes/board';
 import { z } from 'zod';
 import { publicProcedure, router } from '../trpc';
 
@@ -20,6 +21,7 @@ export const appRouter = router({
 		.mutation(async ({ input }) => {
 			await db.insertInto('Example').values({ name: input.name }).execute();
 		}),
+	board: boardRouter,
 });
 
 export type AppRouter = typeof appRouter;
