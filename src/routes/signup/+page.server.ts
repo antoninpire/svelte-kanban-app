@@ -5,8 +5,8 @@ import { z } from 'zod';
 import type { Actions, PageServerLoad } from './$types';
 
 const schema = z.object({
-	email: z.string().email('Not a valid email !'),
-	password: z.string().min(5, 'Password must be at least 5 characters !'),
+	email: z.string().email('Email is not valid !'),
+	password: z.string().min(5, 'Password must be at least 5 characters'),
 });
 
 export const load: PageServerLoad = async (event) => {
