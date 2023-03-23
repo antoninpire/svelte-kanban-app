@@ -97,9 +97,10 @@ model SubTask {
 
   name            String        @db.VarChar(75)
   order           Int           @db.SmallInt  @default(autoincrement())
+  achieved        Boolean       @default(false)
 
-  taskID          String
-  task            Task          @relation(fields: [taskID], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  taskId          String
+  task            Task          @relation(fields: [taskId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 
   updatedAt       DateTime      @updatedAt
   createdAt       DateTime      @default(now())

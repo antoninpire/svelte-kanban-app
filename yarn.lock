@@ -233,11 +233,6 @@
   resolved "https://registry.yarnpkg.com/@polka/url/-/url-1.0.0-next.21.tgz#5de5a2385a35309427f6011992b544514d559aa1"
   integrity sha512-a5Sab1C4/icpTZVzZc5Ghpz88yQtGOyNqYXcZgOssB2uuAr+wF/MvN6bgtW32q7HHrvBki+BsZ0OuNv6EV3K9g==
 
-"@popperjs/core@^2.9.2":
-  version "2.11.6"
-  resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.6.tgz#cee20bd55e68a1720bdab363ecf0c821ded4cd45"
-  integrity sha512-50/17A98tWUfQ176raKiOGXuYpLyyVMkxxG6oylzL3BPOlA6ADGdK7EYunSa4I064xerltq9TGXs8HmOk5E+vw==
-
 "@prisma/client@^4.11.0":
   version "4.11.0"
   resolved "https://registry.yarnpkg.com/@prisma/client/-/client-4.11.0.tgz#41d5664dea4172c954190a432f70b86d3e2e629b"
@@ -1827,13 +1822,6 @@ svelte-dnd-action@^0.9.22:
   version "0.9.22"
   resolved "https://registry.yarnpkg.com/svelte-dnd-action/-/svelte-dnd-action-0.9.22.tgz#003eee9dddb31d8c782f6832aec8b1507fff194d"
   integrity sha512-lOQJsNLM1QWv5mdxIkCVtk6k4lHCtLgfE59y8rs7iOM6erchbLC9hMEFYSveZz7biJV0mpg7yDSs4bj/RT/YkA==
-
-svelte-easy-popover@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/svelte-easy-popover/-/svelte-easy-popover-1.0.0.tgz#bf3ea86bc9752c72766ac5df0b110b13ffb47166"
-  integrity sha512-3PFWhKYaGwd18ww7F/gX6VjFgZjABqQY385T0FduWz5WKFx+eTSF2k0x2ZcWIZ5RGuOMPqdHcGCqjLgrvtEZRg==
-  dependencies:
-    "@popperjs/core" "^2.9.2"
 
 svelte-eslint-parser@^0.24.0:
   version "0.24.2"

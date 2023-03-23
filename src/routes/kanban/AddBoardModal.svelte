@@ -44,8 +44,8 @@
 	<div class="flex flex-col gap-5">
 		<div class="text-gray-300">
 			<fieldset class="flex flex-col gap-2">
-				<label class="ml-1" for="folder-name">Name of Board</label>
-				<Input placeholder="XYZ Project" name="label" bind:value={name} />
+				<label class="ml-1" for="board-name">Name of Board</label>
+				<Input id="board-name" placeholder="XYZ Project" bind:value={name} />
 				<span class="pl-2 text-sm text-gray-300">Max. 75 chars</span>
 			</fieldset>
 		</div>

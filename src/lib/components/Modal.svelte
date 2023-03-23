@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Button from '$lib/components/Button.svelte';
 
+	export let className = '';
 	export let showModal = false; // boolean
 
 	let dialog: HTMLDialogElement; // HTMLDialogElement
@@ -13,7 +14,7 @@
 	bind:this={dialog}
 	on:close={() => (showModal = false)}
 	on:click|self={() => dialog.close()}
-	class="min-w-[24em] max-w-[32em] rounded border-none bg-card p-0 outline-none"
+	class={`min-w-[24em] max-w-[32em] rounded border-none bg-card p-0 outline-none ${className}`}
 >
 	<div on:click|stopPropagation class="p-1">
 		<div

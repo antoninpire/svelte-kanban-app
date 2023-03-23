@@ -26,7 +26,6 @@
 		"lucia-auth": "^0.10.0",
 		"pg": "^8.10.0",
 		"svelte": "^3.55.1",
-		"svelte-easy-popover": "^1.0.0",
 		"trpc-svelte-query": "^0.0.2",
 		"zod": "^3.20.2"
 	},

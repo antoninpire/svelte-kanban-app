@@ -381,9 +381,10 @@ export interface SubTask {
   id: string;
   name: string;
   order: Generated<number>;
-  taskID: string;
   updatedAt: Timestamp;
   createdAt: Generated<Timestamp>;
+  achieved: Generated<boolean>;
+  taskId: string;
 }
 
 export interface Task {

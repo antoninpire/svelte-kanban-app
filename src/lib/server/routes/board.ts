@@ -65,12 +65,23 @@ export const boardRouter = router({
 			// 	.selectAll()
 			// 	.executeTakeFirst();
 
+			// const result = await db
+			// 	.selectFrom('Board')
+			// 	.leftJoin('Column', 'Column.boardId', 'Board.id')
+			// 	.leftJoin('Task', 'Task.columnId', 'Board.id')
+			// 	.where('Board.id', '=', input.id)
+			// 	.selectAll()
+			// 	.execute();
+
+			// console.log('RESULT', result);
+
 			// console.log('RESULT', result);
 			// return result;
 			return await prisma.board.findUnique({
 				where: { id: input.id },
 				select: {
 					id: true,
+					name: true,
 					columns: {
 						select: {
 							id: true,

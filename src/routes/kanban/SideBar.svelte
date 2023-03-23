@@ -6,6 +6,7 @@
 
 	import { trpc } from '$lib/trpc';
 	import AddBoardModal from './AddBoardModal.svelte';
+	import AddTaskModal from './AddTaskModal.svelte';
 
 	const boards = trpc.board.getAllNames.query();
 
@@ -14,7 +15,7 @@
 	}
 </script>
 
-<nav class="h-full w-full bg-white/5 px-4 pt-8">
+<nav class="h-full w-full border-r border-gray-700 bg-white/5 px-4 pt-8">
 	<div class="flex h-full flex-col justify-between">
 		<h1 class="text-3xl font-bold text-white">Kanban</h1>
 		<div class="flex h-[92%] flex-col justify-between">
@@ -75,3 +76,4 @@
 </nav>
 
 <AddBoardModal />
+<AddTaskModal />
