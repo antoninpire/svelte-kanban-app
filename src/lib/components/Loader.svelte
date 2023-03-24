@@ -1,11 +1,17 @@
+<script lang="ts">
+	export let size = 45;
+	export let dark = false;
+</script>
+
 <div class="flex h-full w-full items-center justify-center">
-	<span class="loader" />
+	<span
+		class="loader"
+		style={`font-size: ${size}px; color: ${dark ? '#000' : '#fff'};`}
+	/>
 </div>
 
 <style>
 	.loader {
-		color: #ffffff;
-		font-size: 45px;
 		text-indent: -9999em;
 		overflow: hidden;
 		width: 1em;

@@ -8,5 +8,5 @@ export const addTaskSchema = z.object({
 	subTasks: z.string().array(),
 	columnId: z.string(),
 	description: z.string().optional(),
-	endsAt: z.string().optional(),
+	endsAt: z.date().nullable(),
 });

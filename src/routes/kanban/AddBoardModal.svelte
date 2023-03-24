@@ -3,7 +3,6 @@
 	import X from '$lib/components/icons/X.svelte';
 	import Input from '$lib/components/Input.svelte';
 	import Modal from '$lib/components/Modal.svelte';
-	import Tooltip from '$lib/components/Tooltip.svelte';
 	import type { addBoardSchema } from '$lib/schemas/add-board-schema';
 	import { showAddBoardModal } from '$lib/stores/modals';
 	import { trpc } from '$lib/trpc';
@@ -49,7 +48,7 @@
 	}
 </script>
 
-<Modal bind:showModal={$showAddBoardModal}>
+<Modal bind:showModal={$showAddBoardModal} className="w-[32em]">
 	<h2 slot="header">Create a Board</h2>
 
 	<div class="flex flex-col gap-5">
@@ -69,34 +68,33 @@
 
 		<div class="flex flex-col gap-2">
 			{#each form.columns as _, index}
-				<div class="flex items-center gap-1">
+				<div class="flex items-center gap-1 px-1">
 					<Input
 						placeholder="Work on Branding"
 						bind:value={form.columns[index]}
 					/>
-					<Tooltip label="Remove column">
-						<!-- svelte-ignore a11y-click-events-have-key-events -->
-						<div
-							class="rounded p-1 text-white hover:cursor-pointer hover:bg-transparent/20"
-							on:click={() => removeColumnAtIndex(index)}
-						>
-							<X />
-						</div>
-					</Tooltip>
+					<!-- svelte-ignore a11y-click-events-have-key-events -->
+					<div
+						class="rounded p-1 text-white hover:cursor-pointer hover:bg-transparent/20"
+						on:click={() => removeColumnAtIndex(index)}
+					>
+						<X />
+					</div>
 				</div>
 			{/each}
-			<Button on:click={addColumn} disabled={form.columns.length >= 6}
-				>Add Column
-				<span class="text-sm">(max 6)</span></Button
-			>
+			<div class="h-1" />
+			<Button on:click={addColumn} disabled={form.columns.length >= 6}>
+				Add Column
+				<span class="text-sm">(max 6)</span>
+			</Button>
 		</div>
 	</div>
-
+	<div class="h-1" />
 	<Button
 		slot="footer"
-		variant="light"
 		on:click={createBoard}
 		disabled={$addBoard.isLoading}
-		>{$addBoard.isLoading ? 'Loading...' : 'Create'}</Button
+		variant="light"
+		size="lg">{$addBoard.isLoading ? 'Loading...' : 'Create'}</Button
 	>
 </Modal>

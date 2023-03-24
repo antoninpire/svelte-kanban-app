@@ -74,7 +74,7 @@
 
 <div
 	bind:this={dialog}
-	class="root shadow"
+	class="root bg-card shadow"
 	class:smooth={!startX}
 	on:touchstart={touchStart}
 	on:touchmove={touchMove}
@@ -86,7 +86,6 @@
 <style>
 	.root {
 		position: fixed;
-		background-color: #ffffff;
 		width: 40rem;
 		height: 100vh;
 		overflow-y: auto;

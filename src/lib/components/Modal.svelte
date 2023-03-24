@@ -31,7 +31,7 @@
 		<!-- <button autofocus on:click={() => dialog.close()}>close modal</button> -->
 		<div class="flex items-center justify-center gap-2 py-5 px-4">
 			<!-- svelte-ignore a11y-autofocus -->
-			<Button variant="destructive" on:click={() => dialog.close()}
+			<Button variant="destructive" size="lg" on:click={() => dialog.close()}
 				>Close</Button
 			>
 			<slot name="footer" />

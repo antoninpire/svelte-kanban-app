@@ -2,13 +2,13 @@
 	import { page } from '$app/stores';
 	import { trpc } from '$lib/trpc';
 
-	const getByIdQuery = trpc.board.getById.query(
+	$: getByIdQuery = trpc.board.getById.query(
 		{ id: $page.params.id ?? '' },
 		{ enabled: !!$page.params.id }
 	);
 </script>
 
-<header class="h-full w-full bg-white/5 px-5 py-2 text-white">
+<header class="h-full w-full bg-[#2E313C] px-5 py-2 text-white">
 	{#if $page.params.id}
 		<div class="flex h-full items-center text-2xl font-bold">
 			{$getByIdQuery.data?.name ?? 'Loading...'}

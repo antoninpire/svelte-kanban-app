@@ -27,6 +27,10 @@
 
 	.header {
 		grid-area: header;
+		min-width: 100vw;
+		position: sticky;
+		top: 0;
+		left: 0;
 	}
 
 	.nav {

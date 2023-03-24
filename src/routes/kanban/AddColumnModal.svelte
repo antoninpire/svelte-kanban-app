@@ -97,9 +97,11 @@
 
 	<Button
 		slot="footer"
-		variant="light"
 		on:click={createColumn}
-		disabled={$addColumn.isLoading}
-		>{$addColumn.isLoading ? 'Loading...' : 'Create'}</Button
+		isLoading={$addColumn.isLoading}
+		variant="light"
+		size="lg"
 	>
+		Create
+	</Button>
 </Modal>

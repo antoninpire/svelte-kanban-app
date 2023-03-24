@@ -7,21 +7,20 @@
 	import RightArrow from '$lib/components/icons/RightArrow.svelte';
 	import Trash from '$lib/components/icons/Trash.svelte';
 	import Popover from '$lib/components/Popover.svelte';
-	import Tooltip from '$lib/components/Tooltip.svelte';
 	import { showAddColumnModal, showAddTaskModal } from '$lib/stores/modals';
-	import { trpc } from '$lib/trpc';
+	import { trpc, type RouterOutputs } from '$lib/trpc';
+	import { dndzone } from 'svelte-dnd-action';
+	import { flip } from 'svelte/animate';
 	import { fade } from 'svelte/transition';
+	import Task from './Task.svelte';
 
-	export let column: {
-		id: string;
-		name: string;
-		order: number;
-		tasks: {
-			title: string;
-			id: string;
-		}[];
-	};
+	type Column = RouterOutputs['board']['getById']['columns'][number];
+	type Task = Column['tasks'][number];
+
+	export let column: Column;
 	let popoverVisible = false;
+
+	const flipDurationMs = 200;
 
 	const columnNameInputId = `column-name-${column.id}`;
 
@@ -42,6 +41,8 @@
 			console.error(error);
 		},
 	});
+
+	const updateTaskOrderMutation = trpc.task.updateOrder.mutation();
 
 	function handleClickAddTask() {
 		showAddTaskModal.set({
@@ -89,6 +90,40 @@
 		await $deleteColumnMutation.mutateAsync({ id: column.id });
 		popoverVisible = false;
 	}
+
+	async function updateSort(
+		e: CustomEvent<DndEvent<Task>> & {
+			target: EventTarget & HTMLDivElement;
+		}
+	) {
+		const taskId = e.detail.info.id;
+		const tasks = e.detail.items;
+
+		const taskIndex = tasks.findIndex((v) => v.id === taskId);
+		const order = taskIndex <= 0 ? 0 : tasks[taskIndex - 1]!.order + 1;
+
+		if (e.detail.info.trigger === 'droppedIntoAnother') {
+			// dropped in another column
+		} else if (e.detail.info.trigger === 'droppedIntoZone') {
+			// dropped in same column
+			await $updateTaskOrderMutation.mutateAsync({
+				id: taskId,
+				order,
+				columnId: column.id,
+			});
+		}
+
+		column.tasks = e.detail.items;
+		column = column;
+	}
+	function handleSort(
+		e: CustomEvent<DndEvent<Task>> & {
+			target: EventTarget & HTMLDivElement;
+		}
+	) {
+		column.tasks = e.detail.items;
+		column = column;
+	}
 </script>
 
 <div
@@ -102,15 +137,13 @@
 			id={columnNameInputId}
 		/>
 		<div class="flex items-center gap-1">
-			<Tooltip label="Add a Task">
-				<!-- svelte-ignore a11y-click-events-have-key-events -->
-				<div
-					class="rounded p-1 hover:cursor-pointer hover:bg-transparent/10"
-					on:click={handleClickAddTask}
-				>
-					<Plus />
-				</div>
-			</Tooltip>
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
+			<div
+				class="rounded p-1 hover:cursor-pointer hover:bg-transparent/10"
+				on:click={handleClickAddTask}
+			>
+				<Plus />
+			</div>
 
 			<Popover bind:visible={popoverVisible}>
 				<div
@@ -160,17 +193,29 @@
 			</Popover>
 		</div>
 	</div>
-	{#if column.tasks.length}
-		{#each column.tasks as task}
-			<div class="min-h-[10rem] w-full rounded-lg bg-white/5 p-4">
-				{task.title}
+	<div
+		use:dndzone={{
+			items: column.tasks,
+			flipDurationMs,
+			dragDisabled: !column.tasks.length,
+			type: 'card',
+		}}
+		on:consider={handleSort}
+		on:finalize={updateSort}
+		class="flex min-h-[40vh] flex-col gap-4"
+	>
+		{#if column.tasks.length}
+			{#each column.tasks as task (task.id)}
+				<div animate:flip={{ duration: flipDurationMs }}>
+					<Task {task} />
+				</div>
+			{/each}
+		{:else}
+			<div
+				class="flex h-[80vh] items-center justify-center font-semibold text-gray-500"
+			>
+				No task yet.
 			</div>
-		{/each}
-	{:else}
-		<div
-			class="flex h-full items-center justify-center font-semibold text-gray-500"
-		>
-			No task yet.
-		</div>
-	{/if}
+		{/if}
+	</div>
 </div>

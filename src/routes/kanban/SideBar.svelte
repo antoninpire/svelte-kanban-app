@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import Button from '$lib/components/Button.svelte';
+	import Logout from '$lib/components/icons/Logout.svelte';
 	import Plus from '$lib/components/icons/Plus.svelte';
 	import Loader from '$lib/components/Loader.svelte';
 	import { showAddBoardModal } from '$lib/stores/modals';
@@ -34,7 +35,7 @@
 						{#each $boards.data ?? [] as board}
 							<a
 								href={`/kanban/${board.id}`}
-								class={`rounded-3xl px-3 py-2 hover:cursor-pointer hover:bg-white/5 ${
+								class={`rounded-lg px-3 py-2 hover:cursor-pointer hover:bg-white/5 ${
 									!!$page.params.id && $page.params.id === board.id
 										? 'bg-white/5'
 										: ''
@@ -48,14 +49,17 @@
 					<div class="text-gray-300">No board</div>
 				{/if}
 				<div class="mt-4 flex items-center justify-center">
-					<Button variant="light" on:click={onClickAddBoard}>
-						<Plus />
+					<Button on:click={onClickAddBoard}>
+						<Plus size="20" />
 						Add Board
 					</Button>
 				</div>
 			</div>
 			<div class="flex h-[10vh] items-center justify-center">
-				<Button variant="destructive">Logout</Button>
+				<Button variant="destructive">
+					<Logout size="16" />
+					Logout
+				</Button>
 			</div>
 		</div>
 	</div>

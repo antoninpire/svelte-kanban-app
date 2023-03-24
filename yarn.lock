@@ -640,6 +640,11 @@ cssesc@^3.0.0:
   resolved "https://registry.yarnpkg.com/cssesc/-/cssesc-3.0.0.tgz#37741919903b868565e1c09ea747445cd18983ee"
   integrity sha512-/Tb/JcjK111nNScGob5MNtsntNM1aCNUDipB/TkwZFhyDrrE47SOx/18wF2bbjgc3ZzCSKW1T5nt5EbFoAz/Vg==
 
+date-picker-svelte@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/date-picker-svelte/-/date-picker-svelte-2.3.0.tgz#45578a7b0ff5b0fd3d1eb5239655985d6c6c2033"
+  integrity sha512-DgXlI+FHClWXxjt+EP2Tk37lu9nkxj3zYkNPLjcjiIq/SJhD0CIMmJa75wlXjuvDlpiQt75dMDvCIISTrMzcEQ==
+
 debug@^4.1.1, debug@^4.3.1, debug@^4.3.2, debug@^4.3.4:
   version "4.3.4"
   resolved "https://registry.yarnpkg.com/debug/-/debug-4.3.4.tgz#1319f6579357f2338d3337d2cdd4914bb5dcc865"

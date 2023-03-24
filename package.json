@@ -19,6 +19,7 @@
 		"@tanstack/svelte-query": "^4.24.4",
 		"@trpc/client": "^10.9.1",
 		"@trpc/server": "^10.9.1",
+		"date-picker-svelte": "^2.3.0",
 		"devalue": "^4.2.3",
 		"dotenv": "^16.0.3",
 		"kysely": "^0.23.4",

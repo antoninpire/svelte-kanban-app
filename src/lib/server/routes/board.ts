@@ -1,5 +1,6 @@
 import { db } from '$lib/db';
 import { addBoardSchema } from '$lib/schemas/add-board-schema';
+import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { protectedProcedure, router } from '../trpc';
 
@@ -30,36 +31,11 @@ export const boardRouter = router({
 					},
 				},
 			});
-			// const board = await db
-			// 	.insertInto('Board')
-			// 	.values({
-			// 		name: input.name,
-			// 		userId: session.userId,
-			// 		updatedAt: new Date(),
-			// 		id: createId(),
-			// 	})
-			// 	.returning('id')
-			// 	.executeTakeFirst();
-			// if (board)
-			// 	await db
-			// 		.insertInto('Column')
-			// 		.values(
-			// 			input.columns
-			// 				.filter((column) => column.length !== 0)
-			// 				.map((column, index) => ({
-			// 					boardId: board.id,
-			// 					name: column,
-			// 					id: createId(),
-			// 					updatedAt: new Date(),
-			// 					order: index,
-			// 				}))
-			// 		)
-			// 		.execute();
 		}),
 	getById: protectedProcedure
-		.input(z.object({ id: z.string().cuid2() }))
+		.input(z.object({ id: z.string() }))
 		.query(async ({ ctx: { prisma }, input }) => {
-			return await prisma.board.findUnique({
+			const board = await prisma.board.findUnique({
 				where: { id: input.id },
 				select: {
 					id: true,
@@ -73,6 +49,8 @@ export const boardRouter = router({
 								select: {
 									id: true,
 									title: true,
+									columnId: true,
+									order: true,
 								},
 								orderBy: {
 									order: 'asc',
@@ -85,5 +63,13 @@ export const boardRouter = router({
 					},
 				},
 			});
+
+			if (!board)
+				throw new TRPCError({
+					code: 'NOT_FOUND',
+					message: 'The board does not exist !',
+				});
+
+			return board;
 		}),
 });

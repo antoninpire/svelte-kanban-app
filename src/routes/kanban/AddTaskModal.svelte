@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import Button from '$lib/components/Button.svelte';
+	import DatePicker from '$lib/components/DatePicker.svelte';
 	import X from '$lib/components/icons/X.svelte';
 	import Input from '$lib/components/Input.svelte';
 	import Modal from '$lib/components/Modal.svelte';
-	import Tooltip from '$lib/components/Tooltip.svelte';
 	import type { addTaskSchema } from '$lib/schemas/add-task-schema';
 	import { showAddTaskModal } from '$lib/stores/modals';
 	import { trpc } from '$lib/trpc';
@@ -17,6 +17,7 @@
 		columnId: '',
 		subTasks: [],
 		title: '',
+		endsAt: null,
 	};
 
 	const unsubscribe = showAddTaskModal.subscribe((value) => {
@@ -33,6 +34,7 @@
 				columnId: $showAddTaskModal.columnId ?? '',
 				subTasks: [],
 				title: '',
+				endsAt: null,
 			};
 			showAddTaskModal.set({
 				isOpen: false,
@@ -91,11 +93,7 @@
 		<div class="text-gray-300">
 			<fieldset class="flex flex-col gap-2">
 				<label class="ml-1" for="task-name">Name of Task</label>
-				<Input
-					id="task-name"
-					placeholder="XYZ Project"
-					bind:value={form.title}
-				/>
+				<Input id="task-name" placeholder="UI refine" bind:value={form.title} />
 			</fieldset>
 			{#if errors?.fieldErrors.title}
 				<small class="text-red-500">{errors?.fieldErrors.title}</small>
@@ -104,14 +102,13 @@
 
 		<div class="text-gray-300">
 			<fieldset class="flex flex-col gap-2">
-				<label class="ml-1" for="task-description"
-					>Description of Task<span class="text-sm text-gray-400"
-						>(optional)</span
-					></label
-				>
+				<label class="ml-1" for="task-description">
+					Description
+					<span class="ml-1 text-sm text-gray-400"> (optional) </span>
+				</label>
 				<textarea
 					id="task-description"
-					placeholder="XYZ Project"
+					placeholder="Improve the UI on the dashboard panel"
 					class="min-h-[8rem] w-full rounded border border-gray-700 bg-transparent py-2 px-2 text-sm text-gray-300 outline-none"
 					bind:value={form.description}
 				/>
@@ -123,16 +120,11 @@
 
 		<div class="text-gray-300">
 			<fieldset class="flex flex-col gap-2">
-				<label class="ml-1" for="task-ends-at"
-					>End of Task<span class="text-sm text-gray-400">(optional)</span
-					></label
-				>
-				<input
-					id="task-ends-at"
-					type="date"
-					class="w-full rounded border border-gray-700 bg-transparent py-2 px-2 text-sm text-gray-300 outline-none"
-					bind:value={form.endsAt}
-				/>
+				<span class="ml-1">
+					Due At
+					<span class="ml-1 text-sm text-gray-400">(optional)</span>
+				</span>
+				<DatePicker bind:date={form.endsAt} />
 			</fieldset>
 		</div>
 
@@ -143,15 +135,13 @@
 						placeholder="Work on Branding"
 						bind:value={form.subTasks[index]}
 					/>
-					<Tooltip label="Remove Subtask">
-						<!-- svelte-ignore a11y-click-events-have-key-events -->
-						<div
-							class="rounded p-1 text-white hover:cursor-pointer hover:bg-transparent/20"
-							on:click={() => removeSubTaskAtIndex(index)}
-						>
-							<X />
-						</div>
-					</Tooltip>
+					<!-- svelte-ignore a11y-click-events-have-key-events -->
+					<div
+						class="rounded p-1 text-white hover:cursor-pointer hover:bg-transparent/20"
+						on:click={() => removeSubTaskAtIndex(index)}
+					>
+						<X />
+					</div>
 				</div>
 			{/each}
 			<Button on:click={addSubTask} disabled={form.subTasks.length >= 6}
@@ -163,8 +153,10 @@
 	<Button
 		slot="footer"
 		variant="light"
+		size="lg"
 		on:click={createTask}
-		disabled={$addTask.isLoading}
-		>{$addTask.isLoading ? 'Loading...' : 'Create'}</Button
+		isLoading={$addTask.isLoading}
 	>
+		Create
+	</Button>
 </Modal>

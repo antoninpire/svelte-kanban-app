@@ -9,15 +9,20 @@
 	let left: number;
 
 	const initPosition = () =>
-		({ bottom, left } = anchor?.getBoundingClientRect() ?? {
-			bottom: 0,
-			left: 0,
-		});
+		({ bottom, left } = anchor?.getBoundingClientRect()
+			? {
+					bottom: anchor.getBoundingClientRect().bottom,
+					left: anchor.getBoundingClientRect().left - 165,
+			  }
+			: {
+					bottom: 0,
+					left: 0,
+			  });
 
 	$: anchor, initPosition();
 </script>
 
-<svelte:window on:resize={initPosition} />
+<svelte:window on:resize={initPosition} on:scroll={initPosition} />
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div on:click={() => (visible = true)} bind:this={anchor}>
