@@ -1,39 +1,50 @@
 <script lang="ts">
 	import Button from '$lib/components/Button.svelte';
+	import X from '$lib/components/icons/X.svelte';
 	import Input from '$lib/components/Input.svelte';
 	import Modal from '$lib/components/Modal.svelte';
 	import Tooltip from '$lib/components/Tooltip.svelte';
+	import type { addBoardSchema } from '$lib/schemas/add-board-schema';
 	import { showAddBoardModal } from '$lib/stores/modals';
 	import { trpc } from '$lib/trpc';
+	import type { typeToFlattenedError, z } from 'zod';
 
-	let name = '';
-	let columns: string[] = [''];
+	type Form = z.infer<typeof addBoardSchema>;
+
+	let form: Form = {
+		columns: [''],
+		name: '',
+	};
+
+	let errors: typeToFlattenedError<Form, string> | null | undefined;
 
 	const addBoard = trpc.board.add.mutation({
 		onSuccess() {
 			trpc.board.getAllNames.utils.invalidate();
 			showAddBoardModal.set(false);
-			name = '';
-			columns = [''];
+			form = {
+				columns: [''],
+				name: '',
+			};
 		},
 		onError(error) {
-			console.error(error);
+			errors = error.data?.zodError;
 		},
 	});
 
 	function addColumn() {
-		if (columns.length >= 6) return;
-		columns = [...columns, ''];
+		if (form.columns.length >= 6) return;
+		form.columns = [...form.columns, ''];
 	}
 
 	function removeColumnAtIndex(index: number) {
-		if (index < columns.length) columns = columns.filter((_, i) => index !== i);
+		if (index < form.columns.length)
+			form.columns = form.columns.filter((_, i) => index !== i);
 	}
 
 	async function createBoard() {
 		await $addBoard.mutateAsync({
-			name,
-			columns,
+			...form,
 		});
 	}
 </script>
@@ -45,43 +56,36 @@
 		<div class="text-gray-300">
 			<fieldset class="flex flex-col gap-2">
 				<label class="ml-1" for="board-name">Name of Board</label>
-				<Input id="board-name" placeholder="XYZ Project" bind:value={name} />
-				<span class="pl-2 text-sm text-gray-300">Max. 75 chars</span>
+				<Input
+					id="board-name"
+					placeholder="XYZ Project"
+					bind:value={form.name}
+				/>
+				{#if errors?.fieldErrors.name}
+					<small class="text-red-500">{errors?.fieldErrors.name}</small>
+				{/if}
 			</fieldset>
 		</div>
 
 		<div class="flex flex-col gap-2">
-			{#each columns as _, index}
+			{#each form.columns as _, index}
 				<div class="flex items-center gap-1">
-					<Input placeholder="Work on Branding" bind:value={columns[index]} />
+					<Input
+						placeholder="Work on Branding"
+						bind:value={form.columns[index]}
+					/>
 					<Tooltip label="Remove column">
 						<!-- svelte-ignore a11y-click-events-have-key-events -->
 						<div
 							class="rounded p-1 text-white hover:cursor-pointer hover:bg-transparent/20"
 							on:click={() => removeColumnAtIndex(index)}
 						>
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								width="24"
-								height="24"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								><line x1="18" y1="6" x2="6" y2="18" /><line
-									x1="6"
-									y1="6"
-									x2="18"
-									y2="18"
-								/></svg
-							>
+							<X />
 						</div>
 					</Tooltip>
 				</div>
 			{/each}
-			<Button on:click={addColumn} disabled={columns.length >= 6}
+			<Button on:click={addColumn} disabled={form.columns.length >= 6}
 				>Add Column
 				<span class="text-sm">(max 6)</span></Button
 			>

@@ -1,22 +1,11 @@
 import { db } from '$lib/db';
+import { addTaskSchema } from '$lib/schemas/add-task-schema';
 import { createId } from '@paralleldrive/cuid2';
 import { z } from 'zod';
 import { protectedProcedure, router } from '../trpc';
 
-const addSchema = z.object({
-	title: z
-		.string()
-		.min(3, 'Must be at least 3 characters')
-		.max(75, 'Must be at most 75 characters'),
-	subTasks: z.string().array(),
-	columnId: z.string().cuid2(),
-	description: z.string(),
-	endsAt: z.date().optional(),
-});
-
 export const taskRouter = router({
-	add: protectedProcedure.input(addSchema).mutation(async ({ input }) => {
-		// console.log('INPUT', input);
+	add: protectedProcedure.input(addTaskSchema).mutation(async ({ input }) => {
 		const task = await db
 			.insertInto('Task')
 			.values({

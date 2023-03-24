@@ -1,15 +1,7 @@
 import { db } from '$lib/db';
-import { createId } from '@paralleldrive/cuid2';
+import { addBoardSchema } from '$lib/schemas/add-board-schema';
 import { z } from 'zod';
 import { protectedProcedure, router } from '../trpc';
-
-const addSchema = z.object({
-	name: z
-		.string()
-		.min(3, 'Must be at least 3 characters')
-		.max(75, 'Must be at most 75 characters'),
-	columns: z.string().array().min(1, 'Must have at least one column'),
-});
 
 export const boardRouter = router({
 	getAllNames: protectedProcedure.query(async ({ ctx }) => {
@@ -20,63 +12,53 @@ export const boardRouter = router({
 			.execute();
 	}),
 	add: protectedProcedure
-		.input(addSchema)
-		.mutation(async ({ ctx: { session }, input }) => {
-			const board = await db
-				.insertInto('Board')
-				.values({
+		.input(addBoardSchema)
+		.mutation(async ({ ctx: { session, prisma }, input }) => {
+			return await prisma.board.create({
+				data: {
 					name: input.name,
 					userId: session.userId,
-					updatedAt: new Date(),
-					id: createId(),
-				})
-				.returning('id')
-				.executeTakeFirst();
-			if (board)
-				await db
-					.insertInto('Column')
-					.values(
-						input.columns
-							.filter((column) => column.length !== 0)
-							.map((column, index) => ({
-								boardId: board.id,
-								name: column,
-								id: createId(),
-								updatedAt: new Date(),
-								order: index,
-							}))
-					)
-					.execute();
+					columns: {
+						createMany: {
+							data: input.columns
+								.filter((column) => column.length !== 0)
+								.map((column, index) => ({
+									name: column,
+									order: index,
+								})),
+						},
+					},
+				},
+			});
+			// const board = await db
+			// 	.insertInto('Board')
+			// 	.values({
+			// 		name: input.name,
+			// 		userId: session.userId,
+			// 		updatedAt: new Date(),
+			// 		id: createId(),
+			// 	})
+			// 	.returning('id')
+			// 	.executeTakeFirst();
+			// if (board)
+			// 	await db
+			// 		.insertInto('Column')
+			// 		.values(
+			// 			input.columns
+			// 				.filter((column) => column.length !== 0)
+			// 				.map((column, index) => ({
+			// 					boardId: board.id,
+			// 					name: column,
+			// 					id: createId(),
+			// 					updatedAt: new Date(),
+			// 					order: index,
+			// 				}))
+			// 		)
+			// 		.execute();
 		}),
 	getById: protectedProcedure
 		.input(z.object({ id: z.string().cuid2() }))
 		.query(async ({ ctx: { prisma }, input }) => {
-			// console.log('ID', input.id);
-			// const result = await db
-			// 	.selectFrom('Board')
-			// 	.innerJoinLateral('Column', (cb) =>
-			// 		cb.on('Column.boardId', '=', 'Board.id')
-			// 	)
-			// 	.innerJoinLateral('Task', (tb) =>
-			// 		tb.on('Task.columnId', '=', 'Column.id')
-			// 	)
-			// 	.where('Board.id', '=', input.id)
-			// 	.distinctOn('Board.id')
-			// 	.selectAll()
-			// 	.executeTakeFirst();
-
-			// const result = await db
-			// 	.selectFrom('Board')
-			// 	.leftJoin('Column', 'Column.boardId', 'Board.id')
-			// 	.leftJoin('Task', 'Task.columnId', 'Board.id')
-			// 	.where('Board.id', '=', input.id)
-			// 	.selectAll()
-			// 	.execute();
-
-			// console.log('RESULT', result);
-
-			// console.log('RESULT', result);
-			// return result;
 			return await prisma.board.findUnique({
 				where: { id: input.id },
 				select: {

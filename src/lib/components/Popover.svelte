@@ -2,7 +2,7 @@
 	import { quintOut } from 'svelte/easing';
 	import { fade, scale } from 'svelte/transition';
 
-	let visible = false;
+	export let visible = false;
 	let anchor: HTMLDivElement | undefined = undefined;
 
 	let bottom: number;

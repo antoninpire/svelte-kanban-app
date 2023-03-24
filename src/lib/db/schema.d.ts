@@ -390,7 +390,7 @@ export interface SubTask {
 export interface Task {
   id: string;
   title: string;
-  description: string;
+  description: string | null;
   order: Generated<number>;
   columnId: string;
   updatedAt: Timestamp;

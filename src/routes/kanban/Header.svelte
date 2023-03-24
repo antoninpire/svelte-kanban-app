@@ -9,7 +9,9 @@
 </script>
 
 <header class="h-full w-full bg-white/5 px-5 py-2 text-white">
-	<div class="flex h-full items-center text-2xl font-bold">
-		{$getByIdQuery.data?.name}
-	</div>
+	{#if $page.params.id}
+		<div class="flex h-full items-center text-2xl font-bold">
+			{$getByIdQuery.data?.name ?? 'Loading...'}
+		</div>
+	{/if}
 </header>

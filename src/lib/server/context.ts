@@ -14,16 +14,6 @@ export async function createContext(
 	_opts: FetchCreateContextFnOptions,
 	session: Session
 ) {
-	// console.log('event', _opts.resHeaders);
-	// const user = getUser();
-	// return {
-	// 	session: {
-	// 		user,
-	// 	},
-	// };
-
-	console.log('HEADERs', _opts.resHeaders);
-
 	return {
 		session,
 		..._opts,

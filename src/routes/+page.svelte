@@ -18,5 +18,4 @@
 
 <svelte:head>
 	<title>Kanban App</title>
-	<description>A simple Kanban App made using SvelteKit</description>
 </svelte:head>

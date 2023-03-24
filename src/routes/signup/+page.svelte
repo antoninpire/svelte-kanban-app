@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
 	import Button from '$lib/components/Button.svelte';
 	import Input from '$lib/components/Input.svelte';
 	import { superForm } from 'sveltekit-superforms/client';
@@ -8,7 +7,7 @@
 	export let data: PageData;
 	export let form: ActionData;
 
-	const { form: sform, errors } = superForm(data.form);
+	const { form: sform, errors, enhance } = superForm(data.form);
 </script>
 
 <main class="gradient flex h-screen w-screen items-center justify-center">

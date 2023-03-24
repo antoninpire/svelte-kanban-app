@@ -4,7 +4,7 @@
 </script>
 
 <main
-	class="no-scrollbar grid h-screen w-screen overflow-y-scroll bg-background"
+	class="no-scrollbar grid h-screen min-w-max overflow-y-scroll bg-background"
 >
 	<div class="nav">
 		<SideBar />
@@ -31,6 +31,10 @@
 
 	.nav {
 		grid-area: nav;
+		height: 100vh;
+		position: sticky;
+		top: 0;
+		left: 0;
 	}
 
 	.content {

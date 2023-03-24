@@ -1,6 +1,7 @@
 <script lang="ts">
 	export let variant: 'default' | 'ghost' | 'destructive' | 'light' = 'default';
 	export let disabled = false;
+	export let form: string | undefined = undefined;
 
 	const classesByVariant: Record<typeof variant, string> = {
 		default: 'bg-primary text-gray-700 hover:bg-primary/90',
@@ -16,6 +17,7 @@
 	class={`flex items-center justify-center gap-1 rounded px-5 py-2 font-semibold ${classes}`}
 	on:click
 	{disabled}
+	{form}
 >
 	<slot />
 </button>
