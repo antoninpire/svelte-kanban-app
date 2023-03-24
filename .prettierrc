@@ -3,12 +3,8 @@
 	"singleQuote": true,
 	"tabWidth": 2,
 	"useTabs": true,
-	"plugins": [
-		"prettier-plugin-svelte"
-	],
-	"pluginSearchDirs": [
-		"."
-	],
+	"plugins": ["prettier-plugin-svelte"],
+	"pluginSearchDirs": ["."],
 	"overrides": [
 		{
 			"files": "*.svelte",
@@ -16,5 +12,6 @@
 				"parser": "svelte"
 			}
 		}
-	]
+	],
+	"endOfLine": "auto"
 }
