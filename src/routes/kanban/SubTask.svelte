@@ -8,7 +8,7 @@
 </script>
 
 <div class="my-1 flex items-center justify-between">
-	<div class="flex items-center gap-3">
+	<div class="flex w-full items-center gap-3">
 		<input
 			type="checkbox"
 			bind:checked

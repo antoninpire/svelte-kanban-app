@@ -24,11 +24,6 @@
 
 	let errors: typeToFlattenedError<Form, string> | null | undefined;
 
-	const getByIdQuery = trpc.board.getById.query(
-		{ id: $page.params.id ?? '' },
-		{ enabled: !!$page.params.id }
-	);
-
 	const addColumn = trpc.column.add.mutation({
 		onSuccess() {
 			if ($page.params.id)
@@ -56,6 +51,11 @@
 	}
 
 	onDestroy(unsubscribe);
+
+	$: getByIdQuery = trpc.board.getById.query(
+		{ id: $page.params.id ?? '' },
+		{ enabled: !!$page.params.id }
+	);
 </script>
 
 <Modal bind:showModal={$showAddColumnModal.isOpen}>

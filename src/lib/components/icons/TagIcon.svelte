@@ -1,5 +1,5 @@
 <script lang="ts">
-	export let size = '20';
+	export let size = '24';
 </script>
 
 <svg
@@ -12,7 +12,7 @@
 	stroke-width="2"
 	stroke-linecap="round"
 	stroke-linejoin="round"
-	><path d="M3 6h18" /><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" /><path
-		d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"
-	/></svg
+	><path
+		d="M12 2H2v10l9.29 9.29c.94.94 2.48.94 3.42 0l6.58-6.58c.94-.94.94-2.48 0-3.42L12 2Z"
+	/><path d="M7 7h.01" /></svg
 >

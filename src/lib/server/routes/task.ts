@@ -1,39 +1,34 @@
-import { db } from '$lib/db';
 import { addTaskSchema } from '$lib/schemas/add-task-schema';
 import { editTaskSchema } from '$lib/schemas/edit-task-schema';
-import { createId } from '@paralleldrive/cuid2';
 import { z } from 'zod';
 import { protectedProcedure, router } from '../trpc';
 
 export const taskRouter = router({
 	add: protectedProcedure.input(addTaskSchema).mutation(async ({ input }) => {
-		const task = await db
-			.insertInto('Task')
-			.values({
-				title: input.title,
-				updatedAt: new Date(),
-				id: createId(),
-				description: input.description,
-				columnId: input.columnId,
-				endsAt: input.endsAt ?? undefined,
-			})
-			.returning('id')
-			.executeTakeFirst();
-		if (task && input.subTasks?.length)
-			await db
-				.insertInto('SubTask')
-				.values(
-					input.subTasks
-						.filter((subTask) => subTask.length !== 0)
-						.map((subTask, index) => ({
-							taskId: task.id,
+		const { columnId, endsAt, subTasks, tags, title, description } = input;
+
+		return await prisma?.task.create({
+			data: {
+				columnId,
+				endsAt,
+				title,
+				description,
+				subTasks: {
+					createMany: {
+						data: subTasks.map((subTask) => ({
 							name: subTask,
-							id: createId(),
-							updatedAt: new Date(),
-							order: index,
-						}))
-				)
-				.execute();
+						})),
+					},
+				},
+				tagsByTasks: {
+					createMany: {
+						data: tags.map((tag) => ({
+							tagId: tag.id,
+						})),
+					},
+				},
+			},
+		});
 	}),
 	getById: protectedProcedure
 		.input(z.object({ id: z.string() }))
@@ -59,13 +54,24 @@ export const taskRouter = router({
 							order: 'asc',
 						},
 					},
+					tagsByTasks: {
+						select: {
+							tag: {
+								select: {
+									color: true,
+									label: true,
+									id: true,
+								},
+							},
+						},
+					},
 				},
 			});
 		}),
 	update: protectedProcedure
 		.input(editTaskSchema.and(z.object({ id: z.string() })))
 		.mutation(async ({ ctx: { prisma }, input }) => {
-			const { id, subTasks, ...rest } = input;
+			const { id, subTasks, tags, ...rest } = input;
 
 			const subTasksHavingId = subTasks.filter((subTask) => !!subTask.id);
 			const subTasksWithoutId = subTasks.filter((subTask) => !subTask.id);
@@ -80,7 +86,19 @@ export const taskRouter = router({
 				},
 			});
 
+			await prisma.tagsByTask.deleteMany({
+				where: {
+					taskId: id,
+				},
+			});
+
 			return await Promise.all([
+				prisma.tagsByTask.createMany({
+					data: tags.map((tag) => ({
+						tagId: tag.id,
+						taskId: id,
+					})),
+				}),
 				...subTasksHavingId.map((subTask) =>
 					prisma.subTask.update({
 						where: {
@@ -141,5 +159,12 @@ export const taskRouter = router({
 					},
 				}),
 			]);
+		}),
+	delete: protectedProcedure
+		.input(z.object({ id: z.string() }))
+		.mutation(async ({ ctx: { prisma }, input }) => {
+			const { id } = input;
+
+			return await prisma.task.delete({ where: { id } });
 		}),
 });

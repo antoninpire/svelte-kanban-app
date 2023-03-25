@@ -10,6 +10,7 @@
 	import AddBoardModal from './AddBoardModal.svelte';
 	import AddColumnModal from './AddColumnModal.svelte';
 	import AddTaskModal from './AddTaskModal.svelte';
+	import ManageTagsModal from './ManageTagsModal.svelte';
 
 	const boards = trpc.board.getAllNames.query();
 
@@ -56,10 +57,12 @@
 				</div>
 			</div>
 			<div class="flex h-[10vh] items-center justify-center">
-				<Button variant="destructive">
-					<Logout size="16" />
-					Logout
-				</Button>
+				<form method="post" action="/logout">
+					<Button variant="destructive">
+						<Logout size="16" />
+						Logout
+					</Button>
+				</form>
 			</div>
 		</div>
 	</div>
@@ -68,3 +71,4 @@
 <AddBoardModal />
 <AddTaskModal />
 <AddColumnModal />
+<ManageTagsModal />

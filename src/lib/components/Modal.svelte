@@ -2,20 +2,26 @@
 	import Button from '$lib/components/Button.svelte';
 
 	export let className = '';
-	export let showModal = false; // boolean
+	export let showModal = false;
+	export let onClose: () => void = () => {};
 
-	let dialog: HTMLDialogElement; // HTMLDialogElement
+	let dialog: HTMLDialogElement;
+
+	function handleClose() {
+		dialog.close();
+		onClose();
+	}
 
 	$: if (dialog && showModal) dialog.showModal();
 
-	$: if (dialog && !showModal) dialog.close();
+	$: if (dialog && !showModal) handleClose();
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <dialog
 	bind:this={dialog}
 	on:close={() => (showModal = false)}
-	on:click|self={() => dialog.close()}
+	on:click|self={handleClose}
 	class={`min-w-[24em] max-w-[32em] rounded border-none bg-card p-0 outline-none ${className}`}
 >
 	<div on:click|stopPropagation class="p-1">

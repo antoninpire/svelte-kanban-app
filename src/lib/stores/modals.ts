@@ -10,3 +10,4 @@ export const showAddColumnModal = writable<{ isOpen: boolean; order?: number }>(
 		isOpen: false,
 	}
 );
+export const showManageTagsModal = writable(false);

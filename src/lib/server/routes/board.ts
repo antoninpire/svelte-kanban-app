@@ -1,17 +1,22 @@
-import { db } from '$lib/db';
 import { addBoardSchema } from '$lib/schemas/add-board-schema';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { protectedProcedure, router } from '../trpc';
 
 export const boardRouter = router({
-	getAllNames: protectedProcedure.query(async ({ ctx }) => {
-		return await db
-			.selectFrom('Board')
-			.select(['name', 'id'])
-			.where('userId', '=', ctx.session.userId)
-			.execute();
-	}),
+	getAllNames: protectedProcedure.query(
+		async ({ ctx: { prisma, session } }) => {
+			return await prisma.board.findMany({
+				select: {
+					name: true,
+					id: true,
+				},
+				where: {
+					userId: session.userId,
+				},
+			});
+		}
+	),
 	add: protectedProcedure
 		.input(addBoardSchema)
 		.mutation(async ({ ctx: { session, prisma }, input }) => {
@@ -51,6 +56,23 @@ export const boardRouter = router({
 									title: true,
 									columnId: true,
 									order: true,
+									createdAt: true,
+									endsAt: true,
+									subTasks: {
+										select: {
+											achieved: true,
+										},
+									},
+									tagsByTasks: {
+										select: {
+											tag: {
+												select: {
+													label: true,
+													color: true,
+												},
+											},
+										},
+									},
 								},
 								orderBy: {
 									order: 'asc',
@@ -71,5 +93,11 @@ export const boardRouter = router({
 				});
 
 			return board;
+		}),
+	delete: protectedProcedure
+		.input(z.object({ id: z.string() }))
+		.mutation(async ({ ctx: { prisma }, input }) => {
+			const { id } = input;
+			return await prisma.board.delete({ where: { id } });
 		}),
 });

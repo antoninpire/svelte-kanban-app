@@ -1,10 +1,10 @@
 import { dev } from '$app/environment';
-import { db } from '$lib/db';
-import kyselyAdapter from '@lucia-auth/adapter-kysely';
+import { prisma } from '$lib/db/prisma';
+import prismaAdapter from '@lucia-auth/adapter-prisma';
 import lucia from 'lucia-auth';
 
 export const auth = lucia({
-	adapter: kyselyAdapter(db, 'pg'),
+	adapter: prismaAdapter(prisma),
 	env: dev ? 'DEV' : 'PROD',
 	transformUserData: (userData) => {
 		return {

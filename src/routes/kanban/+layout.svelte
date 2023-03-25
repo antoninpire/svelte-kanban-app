@@ -4,7 +4,7 @@
 </script>
 
 <main
-	class="no-scrollbar grid h-screen min-w-max overflow-y-scroll bg-background"
+	class="no-scrollbar grid h-screen min-w-fit overflow-y-scroll bg-background"
 >
 	<div class="nav">
 		<SideBar />
@@ -27,7 +27,7 @@
 
 	.header {
 		grid-area: header;
-		min-width: 100vw;
+		min-width: calc(100vw - 17rem);
 		position: sticky;
 		top: 0;
 		left: 0;

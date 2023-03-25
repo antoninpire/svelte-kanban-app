@@ -1,7 +1,12 @@
 <script lang="ts">
 	import Loader from '$lib/components/Loader.svelte';
 
-	export let variant: 'default' | 'ghost' | 'destructive' | 'light' = 'default';
+	export let variant:
+		| 'default'
+		| 'ghost'
+		| 'destructive'
+		| 'light'
+		| 'destructive-light' = 'default';
 	export let size: 'default' | 'lg' = 'default';
 	export let disabled = false;
 	export let form: string | undefined = undefined;
@@ -12,6 +17,8 @@
 		ghost: 'bg-transparent text-primary hover:bg-white/10',
 		destructive: 'bg-red-500 text-white hover:bg-red-600',
 		light: 'border border-gray-400 bg-gray-200 text-black hover:bg-gray-300',
+		'destructive-light':
+			'bg-transparent text-red-500 hover:bg-white/5 border border-red-500',
 	};
 
 	const classBySizes: Record<typeof size, string> = {
