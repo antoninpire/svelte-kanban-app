@@ -9,4 +9,11 @@ export const addTaskSchema = z.object({
 	columnId: z.string(),
 	description: z.string().optional(),
 	endsAt: z.date().nullable(),
+	tags: z
+		.object({
+			id: z.string(),
+			label: z.string(),
+			color: z.string(),
+		})
+		.array(),
 });

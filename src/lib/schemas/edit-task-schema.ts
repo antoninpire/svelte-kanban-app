@@ -15,4 +15,11 @@ export const editTaskSchema = z.object({
 		})
 		.array(),
 	endsAt: z.date().nullable(),
+	tags: z
+		.object({
+			id: z.string(),
+			label: z.string(),
+			color: z.string(),
+		})
+		.array(),
 });
